@@ -10,8 +10,16 @@
 }
 
 .board {
+  overflow: scroll;
   display: flex;
   height: 600px;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+.image {
+  width: 80px;
+  height: 80px;
+  margin: 40px;
 }
