@@ -1,28 +1,33 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Board from "./components/Board";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-
-const config = {
-  client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
-  page: 0,
-  per_page: 10,
-};
 
 function App() {
   const [imageList, setImageList] = useState([]);
+  const config = useRef({
+    page: 1,
+    query: "",
+  });
 
-  const fetchData = async ({
-    params,
-    url = "https://api.unsplash.com/photos",
-  }) =>
-    await axios.get(url, {
-      params: {
-        ...config,
-        ...params,
-      },
-    });
+  const fetchData = async ({ isSearch, params }) => {
+    config.current = {
+      ...config,
+      ...params,
+    };
+    return await axios.get(
+      isSearch
+        ? "https://api.unsplash.com/search/photos"
+        : "https://api.unsplash.com/photos",
+      {
+        params: {
+          client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
+          ...params,
+        },
+      }
+    );
+  };
 
   useEffect(() => {
     fetchData({}).then((res) => {
@@ -30,10 +35,41 @@ function App() {
     });
   }, []);
 
+  const observerRef = useRef(null);
+  useEffect(() => {
+    // console.log(observerRef);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        console.log(entries);
+        if (config.current.page > 3) return 0;
+        fetchData({
+          isSearch: true,
+          params: { query: "dog", page: config.current.page + 1 },
+        }).then((res) => {
+          console.log(imageList);
+          setImageList([...imageList, ...res.data.results]);
+        });
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerRef?.current) {
+      return observer.observe(observerRef?.current);
+    }
+  }, [setImageList, observerRef.current]);
+
   return (
     <div className="App">
-      <SearchBar setImageList={setImageList} fetchData={fetchData} />
-      <Board imageList={imageList} fetchData={fetchData} />
+      <SearchBar
+        setImageList={setImageList}
+        fetchData={fetchData}
+        config={config}
+      />
+      <Board
+        imageList={imageList}
+        fetchData={fetchData}
+        observerRef={observerRef}
+      />
     </div>
   );
 }

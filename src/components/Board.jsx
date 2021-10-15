@@ -1,15 +1,17 @@
-const Board = ({ imageList }) => {
-  console.log(imageList);
+const Board = ({ imageList, observerRef }) => {
   return (
     <div className={"board"}>
-      {imageList.map((image) => (
-        <img
-          className={"image"}
-          src={image.urls.regular}
-          alt={""}
-          key={image.id}
-        />
-      ))}
+      {imageList.map((image, index) => {
+        return (
+          <img
+            ref={index === imageList.length - 1 ? observerRef : null}
+            className={"image"}
+            src={image.urls.regular}
+            alt={""}
+            key={image.id}
+          />
+        );
+      })}
     </div>
   );
 };

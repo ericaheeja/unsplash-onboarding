@@ -1,10 +1,13 @@
-const SearchBar = ({ setImageList, fetchData }) => {
+const SearchBar = ({ setImageList, fetchData, config }) => {
   const onClick = () => {
+    config.current = {
+      page: 1,
+      query: "dog",
+    };
     fetchData({
-      url: "https://api.unsplash.com/search/photos",
-      params: { query: "dog" },
+      isSearch: true,
+      params: { query: "dog", page: 1 },
     }).then((res) => {
-      console.log(res.data);
       setImageList(res.data.results);
     });
   };
