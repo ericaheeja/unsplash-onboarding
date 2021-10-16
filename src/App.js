@@ -1,8 +1,9 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Board from "./components/Board";
-import { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
+import ImageModel from "./model/ImageModel";
 
 function App() {
   const [imageList, setImageList] = useState([]);
@@ -11,14 +12,12 @@ function App() {
     query: "",
   });
 
-  console.log("test");
-
   const fetchData = async ({ isSearch, params }) => {
     config.current = {
       ...config,
       ...params,
     };
-    return await axios.get(
+    const response = await axios.get(
       isSearch
         ? "https://api.unsplash.com/search/photos"
         : "https://api.unsplash.com/photos",
@@ -29,12 +28,20 @@ function App() {
         },
       }
     );
+    if (isSearch && config.current.page === 1) {
+      return setImageList(response.data.results.map((e) => new ImageModel(e)));
+    } else if (isSearch) {
+      return setImageList([
+        ...imageList,
+        ...response.data.results.map((e) => new ImageModel(e)),
+      ]);
+    } else {
+      return setImageList(response.data.map((e) => new ImageModel(e)));
+    }
   };
 
-  useEffect(() => {
-    fetchData({}).then((res) => {
-      setImageList(res.data);
-    });
+  useEffect(async () => {
+    await fetchData({});
   }, []);
 
   const observerRef = useRef();
@@ -49,9 +56,6 @@ function App() {
               query: config.current.query,
               page: config.current.page + 1,
             },
-          }).then((res) => {
-            console.log(imageList);
-            setImageList([...imageList, ...res.data.results]);
           });
         }
       });
@@ -62,11 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar
-        setImageList={setImageList}
-        fetchData={fetchData}
-        config={config}
-      />
+      <SearchBar fetchData={fetchData} config={config} />
       <Board
         imageList={imageList}
         fetchData={fetchData}
