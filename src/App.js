@@ -1,7 +1,7 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Board from "./components/Board";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 
 function App() {
@@ -35,28 +35,25 @@ function App() {
     });
   }, []);
 
-  const observerRef = useRef(null);
-  useEffect(() => {
-    // console.log(observerRef);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        console.log(entries);
-        if (config.current.page > 3) return 0;
-        fetchData({
-          isSearch: true,
-          params: { query: "dog", page: config.current.page + 1 },
-        }).then((res) => {
-          console.log(imageList);
-          setImageList([...imageList, ...res.data.results]);
-        });
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerRef?.current) {
-      return observer.observe(observerRef?.current);
-    }
-  }, [setImageList, observerRef.current]);
+  const observerRef = useRef();
+  const scrollRef = useCallback(
+    (node) => {
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          fetchData({
+            isSearch: true,
+            params: { query: "dog", page: config.current.page + 1 },
+          }).then((res) => {
+            console.log(imageList);
+            setImageList([...imageList, ...res.data.results]);
+          });
+        }
+      });
+      if (node) observerRef.current.observe(node);
+    },
+    [imageList]
+  );
 
   return (
     <div className="App">
@@ -68,7 +65,7 @@ function App() {
       <Board
         imageList={imageList}
         fetchData={fetchData}
-        observerRef={observerRef}
+        scrollRef={scrollRef}
       />
     </div>
   );
