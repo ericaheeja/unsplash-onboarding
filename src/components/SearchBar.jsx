@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const SearchBar = ({ setImageList, fetchData, config }) => {
+const SearchBar = ({ fetchData, config }) => {
   const onClick = () => {
     config.current = {
       page: 1,
@@ -9,8 +9,6 @@ const SearchBar = ({ setImageList, fetchData, config }) => {
     fetchData({
       isSearch: true,
       params: { query: inputRef.current.value, page: 1 },
-    }).then((res) => {
-      setImageList(res.data.results);
     });
   };
 
