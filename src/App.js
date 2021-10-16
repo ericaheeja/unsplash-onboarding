@@ -11,6 +11,8 @@ function App() {
     query: "",
   });
 
+  console.log("test");
+
   const fetchData = async ({ isSearch, params }) => {
     config.current = {
       ...config,
