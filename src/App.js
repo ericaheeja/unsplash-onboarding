@@ -43,7 +43,10 @@ function App() {
         if (entries[0].isIntersecting) {
           fetchData({
             isSearch: true,
-            params: { query: "dog", page: config.current.page + 1 },
+            params: {
+              query: config.current.query,
+              page: config.current.page + 1,
+            },
           }).then((res) => {
             console.log(imageList);
             setImageList([...imageList, ...res.data.results]);
