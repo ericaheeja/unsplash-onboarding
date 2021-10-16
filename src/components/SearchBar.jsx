@@ -1,11 +1,7 @@
 import { useRef } from "react";
 
-const SearchBar = ({ fetchData, config }) => {
+const SearchBar = ({ fetchData }) => {
   const onClick = () => {
-    config.current = {
-      page: 1,
-      query: inputRef.current.value,
-    };
     fetchData({
       isSearch: true,
       params: { query: inputRef.current.value, page: 1 },
