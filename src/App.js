@@ -66,7 +66,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar fetchData={fetchData} config={config} />
+      <SearchBar fetchData={fetchData} />
       <Board
         imageList={imageList}
         fetchData={fetchData}
