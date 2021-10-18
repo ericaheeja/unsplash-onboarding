@@ -1,11 +1,9 @@
 .App {
-  padding: 50px 10px 10px 10px;
-  /*position: relative;*/
+  padding: 12px 24px;
 }
 
 .search-bar {
   display: flex;
-  /* height: 50px; */
   justify-content: center;
   align-items: center;
   top: 0;
@@ -15,11 +13,21 @@
 
 .board {
   overflow: scroll;
-  display: flex;
-  /*height: 600px;*/
+  width: 100%;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+}
+
+@media screen and (min-width: 768px) {
+  .board {
+    -webkit-column-count: 2;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .board {
+    -webkit-column-count: 3;
+  }
 }
 
 .image-container {
@@ -27,10 +35,9 @@
 }
 
 .image {
+  margin: 5px auto;
   width: 100%;
-  height: 100%;
-  display: block;
-  margin: 50px auto;
+  object-fit: cover;
 }
 
 .detail {
