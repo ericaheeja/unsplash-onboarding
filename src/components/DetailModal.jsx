@@ -1,20 +1,10 @@
 import "../styles/DetailModal.css";
 
-const DetailModal = ({ setModalVisible }) => {
+const DetailModal = ({ setModalVisible, imageDetail }) => {
+  console.log(imageDetail.current);
   return (
-    <div
-      className={"modal"}
-      // onClick={(e) => {
-      //   e.preventDefault();
-      //   setModalVisible(false);
-      // }}
-    >
-      <div
-        className={"modal-body"}
-        // onClick={(e) => {
-        //   e.stopPropagation();
-        // }}
-      >
+    <div className={"modal"}>
+      <div className={"modal-body"}>
         <div className={"modal-content"}>contents</div>
         <button
           className={"modal-exit"}
