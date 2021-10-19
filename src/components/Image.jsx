@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const Image = ({ image, scrollRef }) => {
+const Image = ({ image, scrollRef, setModalVisible }) => {
   const { imageUrl, authorName, authorUserName, thumbnail, id } = image;
 
   const fetchAuthorProfile = () => {
@@ -10,7 +8,7 @@ const Image = ({ image, scrollRef }) => {
   return (
     <div className={"image-detail-container"} ref={scrollRef}>
       <div className={"image-container"}>
-        <div className={"image-list"}>
+        <div className={"image-list"} onClick={() => setModalVisible(true)}>
           <img className={"image"} src={imageUrl} alt={authorUserName} />
         </div>
         <div className={"detail"} onClick={fetchAuthorProfile}>
