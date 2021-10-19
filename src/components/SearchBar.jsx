@@ -12,8 +12,10 @@ const SearchBar = ({ fetchData }) => {
 
   return (
     <div className={"search-bar"}>
-      <input ref={inputRef} />
-      <button onClick={onClick}>{"검색"}</button>
+      <input className={"input-box"} ref={inputRef} />
+      <button className={"search-button"} onClick={onClick}>
+        {"검색"}
+      </button>
     </div>
   );
 };
