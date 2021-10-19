@@ -9,6 +9,7 @@ import DetailModal from "./components/DetailModal";
 function App() {
   const [imageList, setImageList] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const imageDetail = useRef(null);
   const config = useRef({
     page: 1,
     query: "",
@@ -20,7 +21,7 @@ function App() {
       ...params,
     };
     const response = await axios.get(
-      isSearch
+      isSearch && config.current.query !== ""
         ? "https://api.unsplash.com/search/photos"
         : "https://api.unsplash.com/photos",
       {
@@ -30,7 +31,9 @@ function App() {
         },
       }
     );
-    if (isSearch && config.current.page === 1) {
+    if (config.current.query === "") {
+      return setImageList(response.data.map((e) => new ImageModel(e)));
+    } else if (isSearch && config.current.page === 1) {
       return setImageList(response.data.results.map((e) => new ImageModel(e)));
     } else if (isSearch) {
       return setImageList([
@@ -74,8 +77,14 @@ function App() {
         fetchData={fetchData}
         scrollRef={scrollRef}
         setModalVisible={setModalVisible}
+        imageDetail={imageDetail}
       />
-      {modalVisible && <DetailModal setModalVisible={setModalVisible} />}
+      {modalVisible && (
+        <DetailModal
+          setModalVisible={setModalVisible}
+          imageDetail={imageDetail}
+        />
+      )}
     </div>
   );
 }
