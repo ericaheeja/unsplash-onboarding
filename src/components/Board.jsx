@@ -1,6 +1,6 @@
 import Image from "./Image";
 
-const Board = ({ imageList, scrollRef }) => {
+const Board = ({ imageList, scrollRef, setModalVisible }) => {
   return (
     <div className={"board"}>
       {imageList.map((image, index) => {
@@ -10,6 +10,7 @@ const Board = ({ imageList, scrollRef }) => {
             image={image}
             index={index}
             scrollRef={index === imageList.length - 1 ? scrollRef : null}
+            setModalVisible={setModalVisible}
           />
         );
       })}

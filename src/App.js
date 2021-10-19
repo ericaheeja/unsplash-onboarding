@@ -4,9 +4,11 @@ import Board from "./components/Board";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import ImageModel from "./model/ImageModel";
+import DetailModal from "./components/DetailModal";
 
 function App() {
   const [imageList, setImageList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   const config = useRef({
     page: 1,
     query: "",
@@ -71,7 +73,9 @@ function App() {
         imageList={imageList}
         fetchData={fetchData}
         scrollRef={scrollRef}
+        setModalVisible={setModalVisible}
       />
+      {modalVisible && <DetailModal setModalVisible={setModalVisible} />}
     </div>
   );
 }
