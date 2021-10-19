@@ -26,7 +26,7 @@ function App() {
         : "https://api.unsplash.com/photos",
       {
         params: {
-          client_id: "rNqqe2k2oLRnjOGDaQl0rgAA-8GjwEz2BqRqX7cunB0",
+          client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
           ...params,
         },
       }
