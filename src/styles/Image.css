@@ -1,0 +1,27 @@
+.image-container {
+    position: relative;
+}
+
+.image {
+    margin: 6px auto;
+    width: 100%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.detail {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    opacity: 0;
+    text-align: center;
+    cursor: pointer;
+}
+
+.image-container:hover .detail {
+    opacity: 1;
+}
+
+.author-name {
+    color: white;
+}

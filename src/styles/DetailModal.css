@@ -1,0 +1,17 @@
+.modal {
+    position: fixed;
+    display: flex;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-body {
+    width: 400px;
+    height: 600px;
+    background-color: white;
+}

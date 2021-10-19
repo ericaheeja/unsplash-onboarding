@@ -1,4 +1,5 @@
 import Image from "./Image";
+import "../styles/Board.css";
 
 const Board = ({ imageList, scrollRef, setModalVisible }) => {
   return (

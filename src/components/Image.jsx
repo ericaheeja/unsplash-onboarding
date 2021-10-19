@@ -1,3 +1,5 @@
+import "../styles/Image.css";
+
 const Image = ({ image, scrollRef, setModalVisible }) => {
   const { imageUrl, authorName, authorUserName, thumbnail, id } = image;
 
