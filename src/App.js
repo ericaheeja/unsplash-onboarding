@@ -3,7 +3,7 @@ import SearchBar from "./components/SearchBar";
 import Board from "./components/Board";
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
-import ImageModel from "./model/ImageModel";
+import ImageModel from "./models/ImageModel";
 import DetailModal from "./components/DetailModal";
 
 function App() {
