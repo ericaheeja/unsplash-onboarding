@@ -1,5 +1,6 @@
 export default class ImageDetailModel {
   constructor(detail) {
+    this.url = detail.urls.thumb;
     this.views = detail.views;
     this.cameraMake = detail.exif.make;
     this.cameraModel = detail.exif.model;
