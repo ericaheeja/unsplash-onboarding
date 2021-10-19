@@ -1,3 +1,5 @@
+import "../styles/DetailModal.css";
+
 const DetailModal = ({ setModalVisible }) => {
   return (
     <div

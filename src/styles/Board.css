@@ -1,0 +1,18 @@
+.board {
+    overflow: scroll;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (min-width: 768px) {
+    .board {
+        -webkit-column-count: 2;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .board {
+        -webkit-column-count: 3;
+    }
+}
