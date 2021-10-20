@@ -5,7 +5,7 @@ import ImageDetailModel from "../models/ImageDetailModel";
 const Image = ({ image, scrollRef, setModalVisible, imageDetail }) => {
   const { imageUrl, authorName, authorUserName, thumbnail, id } = image;
 
-  const fetchAuthorProfile = () => {
+  const fetchAuthorProfile = (authorUserName) => {
     window.open(`https://unsplash.com/@${authorUserName}`);
   };
 
