@@ -1,21 +1,22 @@
-const SearchBar = ({ setImageList, fetchData, config }) => {
+import { useRef } from "react";
+import "../styles/SearchBar.css";
+
+const SearchBar = ({ fetchData }) => {
   const onClick = () => {
-    config.current = {
-      page: 1,
-      query: "dog",
-    };
     fetchData({
       isSearch: true,
-      params: { query: "dog", page: 1 },
-    }).then((res) => {
-      setImageList(res.data.results);
+      params: { query: inputRef.current.value, page: 1 },
     });
   };
 
+  const inputRef = useRef();
+
   return (
     <div className={"search-bar"}>
-      <input />
-      <button onClick={onClick}>{"검색"}</button>
+      <input className={"input-box"} ref={inputRef} />
+      <button className={"search-button"} onClick={onClick}>
+        {"검색"}
+      </button>
     </div>
   );
 };

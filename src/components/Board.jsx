@@ -1,14 +1,18 @@
-const Board = ({ imageList, scrollRef }) => {
+import Image from "./Image";
+import "../styles/Board.css";
+
+const Board = ({ imageList, scrollRef, setModalVisible, imageDetail }) => {
   return (
     <div className={"board"}>
       {imageList.map((image, index) => {
         return (
-          <img
-            ref={index === imageList.length - 1 ? scrollRef : null}
-            className={"image"}
-            src={image.urls.regular}
-            alt={""}
+          <Image
             key={image.id}
+            imageDetail={imageDetail}
+            image={image}
+            index={index}
+            scrollRef={index === imageList.length - 1 ? scrollRef : null}
+            setModalVisible={setModalVisible}
           />
         );
       })}

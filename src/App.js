@@ -1,11 +1,15 @@
 import "./App.css";
 import SearchBar from "./components/SearchBar";
 import Board from "./components/Board";
-import { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
+import ImageModel from "./models/ImageModel";
+import DetailModal from "./components/DetailModal";
 
 function App() {
   const [imageList, setImageList] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const imageDetail = useRef(null);
   const config = useRef({
     page: 1,
     query: "",
@@ -16,23 +20,40 @@ function App() {
       ...config,
       ...params,
     };
-    return await axios.get(
-      isSearch
+    const response = await axios.get(
+      isSearch && config.current.query !== ""
         ? "https://api.unsplash.com/search/photos"
         : "https://api.unsplash.com/photos",
       {
-        params: {
-          client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
-          ...params,
-        },
+        params: isSearch
+          ? {
+              client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
+              per_page: 20,
+              ...params,
+            }
+          : {
+              client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
+              per_page: 200,
+              page: 1,
+            },
       }
     );
+    if (config.current.query === "") {
+      return setImageList(response.data.map((e) => new ImageModel(e)));
+    } else if (isSearch && config.current.page === 1) {
+      return setImageList(response.data.results.map((e) => new ImageModel(e)));
+    } else if (isSearch) {
+      return setImageList([
+        ...imageList,
+        ...response.data.results.map((e) => new ImageModel(e)),
+      ]);
+    } else {
+      return setImageList(response.data.map((e) => new ImageModel(e)));
+    }
   };
 
-  useEffect(() => {
-    fetchData({}).then((res) => {
-      setImageList(res.data);
-    });
+  useEffect(async () => {
+    await fetchData({});
   }, []);
 
   const observerRef = useRef();
@@ -43,10 +64,10 @@ function App() {
         if (entries[0].isIntersecting) {
           fetchData({
             isSearch: true,
-            params: { query: "dog", page: config.current.page + 1 },
-          }).then((res) => {
-            console.log(imageList);
-            setImageList([...imageList, ...res.data.results]);
+            params: {
+              query: config.current.query,
+              page: config.current.page + 1,
+            },
           });
         }
       });
@@ -57,16 +78,20 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar
-        setImageList={setImageList}
-        fetchData={fetchData}
-        config={config}
-      />
+      <SearchBar fetchData={fetchData} />
       <Board
         imageList={imageList}
         fetchData={fetchData}
         scrollRef={scrollRef}
+        setModalVisible={setModalVisible}
+        imageDetail={imageDetail}
       />
+      {modalVisible && (
+        <DetailModal
+          setModalVisible={setModalVisible}
+          imageDetail={imageDetail}
+        />
+      )}
     </div>
   );
 }
