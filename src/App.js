@@ -25,10 +25,17 @@ function App() {
         ? "https://api.unsplash.com/search/photos"
         : "https://api.unsplash.com/photos",
       {
-        params: {
-          client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
-          ...params,
-        },
+        params: isSearch
+          ? {
+              client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
+              per_page: 20,
+              ...params,
+            }
+          : {
+              client_id: "2YK5AHxuEKHDew9UR1kU2vcV9Nz7U9nT3BFp1k6eZfw",
+              per_page: 200,
+              page: 1,
+            },
       }
     );
     if (config.current.query === "") {
